@@ -35,11 +35,14 @@ if [ "${ALLOW_MAINNET:-0}" != "1" ] && [ "$NETWORK" = "mainnet" ]; then
   exit 1
 fi
 
-WASM="${WASM_PATH:-contracts/target/wasm32v1-none/release/stellar_dapp_contract.wasm}"
+WASM="${WASM_PATH:-../splitlock-contract/target/wasm32v1-none/release/stellar_dapp_contract.wasm}"
 
 if [ ! -f "$WASM" ]; then
-  echo "WASM not found at $WASM. Building contract first..."
-  (cd contracts && cargo build --target wasm32v1-none --release)
+  echo "WASM not found at $WASM."
+  echo "Build the contract from the splitlock-contract repo first, then set WASM_PATH:"
+  echo "  cd splitlock-contract && cargo build --target wasm32v1-none --release"
+  echo "  WASM_PATH=../splitlock-contract/target/wasm32v1-none/release/stellar_dapp_contract.wasm ./scripts/deploy.sh"
+  exit 1
 fi
 
 ACCOUNT="${STELLAR_ACCOUNT:-testnet account}"
